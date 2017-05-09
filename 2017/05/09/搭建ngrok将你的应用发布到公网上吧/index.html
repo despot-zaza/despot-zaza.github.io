@@ -9,14 +9,18 @@
   <meta name="theme-color" content="#3F51B5">
   
   
-  <meta name="keywords" content="">
-  <meta property="og:type" content="article">
+  <meta name="keywords" content="ngrok,deploy">
+  <meta name="description" content="环境准备 首先需要下载go环境，这里是下载的 go1.8.linux-amd64.tar.gz 的版本，其他版本可以在GO的官方网站复制对应的下载链接 1wget http://www.golangtc.com/static/go/1.8/go1.8.linux-amd64.tar.gz 将下载完的压缩解压到服务器 /usr/local/go 即可，然后将/usr/local/go/bin/* 复">
+<meta name="keywords" content="ngrok,deploy">
+<meta property="og:type" content="article">
 <meta property="og:title" content="搭建ngrok将你的应用发布到公网上吧">
 <meta property="og:url" content="http://despot-zaza.github.io/2017/05/09/搭建ngrok将你的应用发布到公网上吧/index.html">
 <meta property="og:site_name" content="ZAZA BLOG">
-<meta property="og:updated_time" content="2017-05-09T02:44:51.883Z">
+<meta property="og:description" content="环境准备 首先需要下载go环境，这里是下载的 go1.8.linux-amd64.tar.gz 的版本，其他版本可以在GO的官方网站复制对应的下载链接 1wget http://www.golangtc.com/static/go/1.8/go1.8.linux-amd64.tar.gz 将下载完的压缩解压到服务器 /usr/local/go 即可，然后将/usr/local/go/bin/* 复">
+<meta property="og:updated_time" content="2017-05-09T11:53:30.144Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="搭建ngrok将你的应用发布到公网上吧">
+<meta name="twitter:description" content="环境准备 首先需要下载go环境，这里是下载的 go1.8.linux-amd64.tar.gz 的版本，其他版本可以在GO的官方网站复制对应的下载链接 1wget http://www.golangtc.com/static/go/1.8/go1.8.linux-amd64.tar.gz 将下载完的压缩解压到服务器 /usr/local/go 即可，然后将/usr/local/go/bin/* 复">
   
     <link rel="alternative" href="/atom.xml" title="ZAZA BLOG" type="application/atom+xml">
   
@@ -122,6 +126,8 @@
 </time>
 
 
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/tool/">tool</a></li></ul>
+
         
     </h5>
   </div>
@@ -132,6 +138,8 @@
   class="article article-type-post" itemprop="blogPost">
     <div class="post-meta flex-row">
         
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deploy/">deploy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ngrok/">ngrok</a></li></ul>
+
     </div>
     <div class="post-body">
         <aside class="post-widget" id="post-widget">
@@ -177,7 +185,7 @@
 
             
             <nav class="post-toc-wrap" id="post-toc">
-            
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#环境准备"><span class="post-toc-number">1.</span> <span class="post-toc-text">环境准备</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#开始编译"><span class="post-toc-number">2.</span> <span class="post-toc-text">开始编译</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#编译客户端"><span class="post-toc-number">3.</span> <span class="post-toc-text">编译客户端</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#运行客户端"><span class="post-toc-number">4.</span> <span class="post-toc-text">运行客户端</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#加入开机启动项"><span class="post-toc-number">5.</span> <span class="post-toc-text">加入开机启动项</span></a></li></ol>
             </nav>
             
         </aside>
@@ -185,7 +193,56 @@
         <div class="post-main">
 
             <div class="post-content" id="post-content" itemprop="postContent">
-            
+            <h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><hr>
+<p>首先需要下载go环境，这里是下载的 go1.8.linux-amd64.tar.gz 的版本，其他版本可以在GO的官方网站复制对应的下载链接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget http://www.golangtc.com/static/go/1.8/go1.8.linux-amd64.tar.gz</div></pre></td></tr></table></figure>
+<p>将下载完的压缩解压到服务器 /usr/local/go 即可，然后将/usr/local/go/bin/* 复制到 /usr/bin/ </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src/</div></pre></td></tr></table></figure>
+<p>下载ngrok源代码,在github上能够搜到ngrok项目的最新版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> https://github.com/inconshreveable/ngrok.git</div></pre></td></tr></table></figure>
+<p>设置GOPATH环境变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> GOPATH=/usr/<span class="built_in">local</span>/src/ngrok/</div></pre></td></tr></table></figure>
+<p>设置域名变量，为了后续方便，建议这里使用一级域名，因为ngrok会需要你的二级域名做为host（client不填二级域名的话ngrok会随机给你分配一个二级域名）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> NGROK_DOMAIN=<span class="string">"yourdomain.com"</span></div></pre></td></tr></table></figure>
+<p>打开ngrok目录，环境准备完成</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ngrok</div></pre></td></tr></table></figure>
+<h2 id="开始编译"><a href="#开始编译" class="headerlink" title="开始编译"></a>开始编译</h2><hr>
+<p>首先为根域名生成证书</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl genrsa -out rootCA.key 2048</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">openssl req -x509 -new -nodes -key rootCA.key -subj <span class="string">"/CN=<span class="variable">$NGROK_DOMAIN</span>"</span> -days 5000 -out rootCA.pem</div><div class="line">openssl genrsa -out device.key 2048</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">openssl req -new -key device.key -subj <span class="string">"/CN=<span class="variable">$NGROK_DOMAIN</span>"</span> -out device.csr</div><div class="line">openssl x509 -req -in device.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out device.crt -days 5000</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cp rootCA.pem assets/client/tls/ngrokroot.crt</div><div class="line">cp device.crt assets/server/tls/snakeoil.crt </div><div class="line">cp device.key assets/server/tls/snakeoil.key</div></pre></td></tr></table></figure>
+<p>编译服务端比较容易，先指定一下环境变量，然后再make：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GOOS=linux GOARCH=amd64</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make release-server</div></pre></td></tr></table></figure>
+<p>编译成功后，应该可以在 /usr/local/src/ngrok/bin 下生成了一个 ngrokd 可执行文件，这就是我们的服务端了，现在启动服务端试试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bin/ngrokd -domain=<span class="string">"<span class="variable">$NGROK_DOMAIN</span>"</span> -httpAddr=<span class="string">":80"</span></div></pre></td></tr></table></figure>
+<p>如果没有报错的话，会出现以下输出：</p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[<span class="number">10</span>:<span class="number">05</span>:<span class="number">48</span> <span class="symbol">CST</span> <span class="number">2015</span>/<span class="number">04</span>/<span class="number">17</span>] </div><div class="line">[<span class="symbol">INFO</span>] (ngrok/log.(*<span class="symbol">PrefixLogger</span>).<span class="symbol">Info</span>:<span class="number">83</span>) [registry] [tun] <span class="symbol">No</span> affinity cache specified</div><div class="line">[<span class="number">10</span>:<span class="number">05</span>:<span class="number">48</span> <span class="symbol">CST</span> <span class="number">2015</span>/<span class="number">04</span>/<span class="number">17</span>] [<span class="symbol">INFO</span>] (ngrok/log.(*<span class="symbol">PrefixLogger</span>).<span class="symbol">Info</span>:<span class="number">83</span>) [metrics] <span class="symbol">Reporting</span> every <span class="number">30</span> seconds</div><div class="line">[<span class="number">10</span>:<span class="number">05</span>:<span class="number">48</span> <span class="symbol">CST</span> <span class="number">2015</span>/<span class="number">04</span>/<span class="number">17</span>] [<span class="symbol">INFO</span>] (ngrok/log.<span class="symbol">Info</span>:<span class="number">112</span>) </div><div class="line"><span class="symbol">Listening</span> for public http connections on [::]:<span class="number">8000</span>[<span class="number">10</span>:<span class="number">05</span>:<span class="number">48</span> <span class="symbol">CST</span> <span class="number">2015</span>/<span class="number">04</span>/<span class="number">17</span>] [<span class="symbol">INFO</span>] (ngrok/log.<span class="symbol">Info</span>:<span class="number">112</span>) <span class="symbol">Listening</span> for public https connections on [::]:<span class="number">443</span>[<span class="number">10</span>:<span class="number">05</span>:<span class="number">48</span> <span class="symbol">CST</span> <span class="number">2015</span>/<span class="number">04</span>/<span class="number">17</span>] [<span class="symbol">INFO</span>] (ngrok/log.<span class="symbol">Info</span>:<span class="number">112</span>) <span class="symbol">Listening</span> for control and proxy connections on [::]:<span class="number">4443</span></div></pre></td></tr></table></figure>
+<h2 id="编译客户端"><a href="#编译客户端" class="headerlink" title="编译客户端"></a>编译客户端</h2><hr>
+<p>现在先 ctrl+c 退出，我们还需要编译客户端呢。<br><strong>首先编译linux客户端：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src/ngrok</div><div class="line">GOOS=linux GOARCH=amd64 </div><div class="line">make release-client</div></pre></td></tr></table></figure>
+<blockquote>
+<p>同理，这里的amd64是64位系统，32位改成386#应该会在 bin/ 目录下生成ngrok客户端程序</p>
+</blockquote>
+<p><strong>如果是windows下的客户端，是这样的：</strong></p>
+<blockquote>
+<p><strong>windows 环境有点小问题，需要go1.4版本才可以执行这里后续再更新详细步骤</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/go/src</div><div class="line">GOOS=windows GOARCH=amd64 ./make.bash</div><div class="line"><span class="built_in">cd</span> -</div><div class="line">GOOS=windows GOARCH=amd64 </div><div class="line">make release-client</div></pre></td></tr></table></figure></p>
+<p>同理，这里的amd64是64位系统，32位改成386#应该会在 bin/windows_amd64 目录下生成ngrok客户端程序</p>
+</blockquote>
+<h2 id="运行客户端"><a href="#运行客户端" class="headerlink" title="运行客户端"></a>运行客户端</h2><hr>
+<p>现在我们来到自己电脑上，通过scp命令将客户端文件复制到本地，并准备启动客户端。在启动之前，我们需要为客户端编写一个配置文件 ngrok.cfg ：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">server_addr</span>: "ngrok.yourdomain.com:4443"</div><div class="line"><span class="attribute">trust_host_root_certs</span>: false</div></pre></td></tr></table></figure>
+<p>然后启动客户端，假设我们要分配一个二级域名 test.yourdomain.com 执行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./ngrok -config=./ngrok.cfg -subdomain=<span class="built_in">test</span> 80</div></pre></td></tr></table></figure>
+<p>解释一下参数：<br>-config 就是上面配置文件ngrok.cfg的路径-subdomain 就是需要分配域名的前缀部分80 就是本机websever的端口，比如apache监听的端口，一会ngrok会将请求映射到该端口上。</p>
+<p>如果没错误，应该会出现以下的输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Tunnel Status                 online</div><div class="line">Version                       1.7/1.7</div><div class="line">Forwarding                    http://test.ngrok.ekan001.com:8000 -&gt; 127.0.0.1:80</div><div class="line">Forwarding                    https://test.ngrok.ekan001.com:8000 -&gt; 127.0.0.1:80</div><div class="line">Web Interface                 127.0.0.1:4040</div><div class="line"># Conn                        0</div><div class="line">Avg Conn Time                 0.00ms</div></pre></td></tr></table></figure>
+<h2 id="加入开机启动项"><a href="#加入开机启动项" class="headerlink" title="加入开机启动项"></a>加入开机启动项</h2><hr>
+<p>由于我的服务端是Ubuntu的环境，运行在其他操作上的小伙伴可以参考下：<br>rc.local脚本是一个ubuntu开机后会自动执行的脚本，我们可以在该脚本内添加命令行指令。<br>该脚本位于/etc/路径下，需要root权限才能修改。该脚本具体格式如下：</p>
+<p>将如下命令添加到脚本中即可开机自启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/src/ngrok/bin/ngrokd -domain=<span class="string">"yourdomain.com"</span> -httpAddr=<span class="string">":80"</span></div></pre></td></tr></table></figure>
+
 
             
             <div class="post-reward">
